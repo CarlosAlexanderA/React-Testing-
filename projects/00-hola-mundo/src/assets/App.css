@@ -26,9 +26,35 @@ article header span {
 }
 
 .tw-follwCard-button {
+  cursor: pointer;
   margin-left: 16px;
   border: 0;
   border-radius: 999px;
   padding: 6px 16px;
   font-weight: bold;
+  transition: 0.3s ease background-color;
+}
+.tw-follwCard-button.is-following {
+  border: 1px solid #bbb;
+  background-color: transparent;
+  color: #fff;
+  width: 150px;
+}
+.tw-follwCard-button.is-following:hover .tw-follwCard-text {
+  display: none;
+}
+.tw-follwCard-button.is-following:hover .tw-follwCard-stopFollow {
+  display: block;
+}
+.tw-follwCard-button.is-following:hover {
+  background-color: rgba(255, 0, 0, 0.288);
+  color: red;
+  border: 1px solid red;
+  transition: 0.3s ease all;
+}
+.tw-follwCard-button:hover {
+  background-color: #09f;
+}
+.tw-follwCard-stopFollow {
+  display: none;
 }
