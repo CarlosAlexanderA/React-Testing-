@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import './App.css';
 import confetti from 'canvas-confetti';
 import { Square } from './components/Square';
@@ -6,6 +6,8 @@ import { TURNS } from './constants';
 import { checkWinner, checkEndGame } from './logic/board';
 import { WinnerModal } from './components/WinnerModal';
 import { saveGameToStorage, resetGameStorage } from './logic/storage';
+
+// comentario sin valor
 function App() {
   // no puede ir en un if,
   const [board, setBoard] = useState(() => {
@@ -49,6 +51,11 @@ function App() {
       setWinner(false);
     }
   };
+
+  // use efect, se ejcecuta cuando algo cambia
+  useEffect(() => {
+    console.log('useEfect');
+  }, [winner]);
   return (
     <main className="board">
       <h1>Tic Tac Toe</h1>
