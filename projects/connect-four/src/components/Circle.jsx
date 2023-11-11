@@ -1,7 +1,8 @@
 export const Circle = ({ children, index, prevClass, updateBoard }) => {
-  const className = `${prevClass}-btnCircle `;
+  const className = `${prevClass}-btnCircle ${
+    children === 'x' ? 'green' : children === 'o' ? 'red' : ''
+  }`;
   const handleClick = () => {
-    console.log(index);
     updateBoard(index);
   };
   return (
