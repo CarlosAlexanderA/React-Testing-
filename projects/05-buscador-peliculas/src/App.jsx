@@ -1,28 +1,69 @@
-import responseMovies from './mocks/with-results.json';
-// import noResponseMovies from './mocks/no-results.json';
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
+import { Movies } from './components/Movies';
+import { useMovies } from './hooks/useMovies';
+
+function useSearch() {
+  const [search, setSearch] = useState('');
+  const [error, SetError] = useState(null);
+  // nota: useRef no renderiza de nuevo el componente
+  const isFirstInput = useRef(true);
+
+  useEffect(() => {
+    if (search.match(/^\d+$/)) {
+      SetError('No se puede buscar una pelicula con un numero');
+      return;
+    }
+    if (isFirstInput.current) {
+      isFirstInput.current = search === '';
+      return;
+    }
+    if (search === '') {
+      SetError('No se puede buscar una pelicula vacia');
+      return;
+    }
+
+    if (search.length < 3) {
+      SetError('La busqueda debe de tener al menos 3 caracteres');
+      return;
+    }
+    SetError(null);
+  }, [search]);
+  return { search, setSearch, error };
+}
+
 function App() {
-  const movies = responseMovies.Search;
-  const hasMovies = movies?.length > 0;
+  const { search, setSearch, error } = useSearch();
+  const { movies, getMovies } = useMovies({ search });
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    getMovies();
+  };
+  const handleChange = (event) => {
+    const newSearch = event.target.value;
+    if (newSearch.startsWith(' ')) return;
+    setSearch(newSearch);
+  };
 
   return (
     <div className="page">
       <header>
         <h1>Buscador de peliculas</h1>
-        <form action="#">
-          <input type="text" placeholder="Avenger, StarWars, The Matrix ..." />
+        <form action="#" onSubmit={handleSubmit}>
+          <input
+            onChange={handleChange}
+            value={search}
+            type="text"
+            placeholder="Avenger, StarWars, The Matrix ..."
+            name="name"
+          />
           <button type="submit">Buscar</button>
         </form>
       </header>
       <main>
-        <h3>Aqui se mostraran las peliculas</h3>
-        {hasMovies && (
-          <ul>
-            {movies.map((movie) => (
-              <li key={movie.imdbID}>{movie.Title}</li>
-            ))}
-          </ul>
-        )}
+        {error && <p>{error}</p>}
+        <Movies movies={movies} />
       </main>
     </div>
   );
