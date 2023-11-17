@@ -1,22 +1,25 @@
-import { useState } from 'react';
 import { Products } from './components/Products.jsx';
 import { products as initialProducts } from './mocks/products.json';
+import { Header } from './components/Header.jsx';
+import { Footer } from './components/Footer.jsx';
+import { IS_DEVELOPMENT } from '../config.js';
+import { useFilters } from './hooks/useFilters.js';
+import { Cart } from './components/Cart.jsx';
+import { CartProvider } from './context/cart.jsx';
 
 function App() {
-  const [products] = useState(initialProducts);
-  const [filters, setFilters] = useState({ category: 'all', minPrice: 0 });
+  const { filterProducts } = useFilters();
 
-  const filterProduct = (items) => {
-    return items.filter((item) => {
-      return (
-        item.price >= filters.minPrice &&
-        (filters.category === 'all' || item.category === filters.category)
-      );
-    });
-  };
-
-  const filteredProducts = filterProduct(products);
-  return <Products products={filteredProducts} />;
+  const filteredProducts = filterProducts(initialProducts);
+  return (
+    <CartProvider>
+      <Header />
+      <Cart />
+      <Products products={filteredProducts} />
+      <div className="tiktok"></div>
+      {IS_DEVELOPMENT && <Footer />}
+    </CartProvider>
+  );
 }
 
 export default App;
