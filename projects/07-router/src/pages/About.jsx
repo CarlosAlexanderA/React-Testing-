@@ -1,6 +1,7 @@
 import { Link } from '../Link'
 
 export default function AboutPage() {
+  console.log('Entrando en About page')
   return (
     <>
       <h1>About</h1>

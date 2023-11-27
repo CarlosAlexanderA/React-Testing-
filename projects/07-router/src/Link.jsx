@@ -6,16 +6,13 @@ function navigate(href) {
   const navegationEvent = new Event(EVENTS.POPSTATE)
   window.dispatchEvent(navegationEvent)
 }
-
+// as
 export function Link({ target, to, ...props }) {
   const handleClick = event => {
-    const isMainEvent = event.button === 0 // prymary click => (right click)
+    const isMainEvent = event.button === 0 // prymary click => (left click)
     const isModifiedEvent =
-      event.metakey || event.altkey || event.ctrlkey || event.shiftkey
+      event.metaKey || event.altKey || event.ctrlKey || event.shiftKey
     const isManageableEvent = target === undefined || target === '_self'
-    console.log(isModifiedEvent)
-    console.log(event.ctrlkey)
-
     if (isMainEvent && isManageableEvent && !isModifiedEvent) {
       event.preventDefault()
       navigate(to) // navegacion por SPA(Single Page Aplication)
