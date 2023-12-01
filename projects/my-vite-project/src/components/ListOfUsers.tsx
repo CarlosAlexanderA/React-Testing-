@@ -9,67 +9,70 @@ import {
 	TableRow,
 	Title,
 } from "@tremor/react";
-
-const users = [
-	{
-		id: "1",
-		name: "Peter Doe",
-		email: "peter@gmail.com",
-		github: "peter",
-	},
-	{
-		id: "2",
-		name: "Lena Whitehouse",
-		email: "lena_whitehouse@gmail.com",
-		github: "lena",
-	},
-	{
-		id: "3",
-		name: "Phil Less",
-		email: "lessPhil@gmail.com",
-		github: "phil",
-	},
-	{
-		id: "4",
-		name: "Miguel Angel Duran",
-		email: "midudev@gmail.com",
-		github: "midudev",
-	},
-	//#region usersPorc
-	// {
-	// 	name: "Max Balmoore",
-	// 	leads: 49,
-	// 	sales: "860,000",
-	// 	quota: "750,000",
-	// 	variance: "low",
-	// 	region: "Region B",
-	// 	delta: "overperforming",
-	// 	deltaType: "increase",
-	// },
-	// {
-	// 	name: "Peter Moore",
-	// 	leads: 82,
-	// 	sales: "1,460,000",
-	// 	quota: "1,500,000",
-	// 	variance: "low",
-	// 	region: "Region A",
-	// 	delta: "average",
-	// 	deltaType: "unchanged",
-	// },
-	// {
-	// 	name: "Joe Sachs",
-	// 	leads: 49,
-	// 	sales: "1,230,000",
-	// 	quota: "1,800,000",
-	// 	variance: "medium",
-	// 	region: "Region B",
-	// 	delta: "underperforming",
-	// 	deltaType: "moderateDecrease",
-	// },
-	//#endregion
-];
+import { useAppSelector } from "../hooks/store";
+import { useUserActions } from "./useUserActions";
+// const users = [
+// 	{
+// 		id: "1",
+// 		name: "Peter Doe",
+// 		email: "peter@gmail.com",
+// 		github: "peter",
+// 	},
+// 	{
+// 		id: "2",
+// 		name: "Lena Whitehouse",
+// 		email: "lena_whitehouse@gmail.com",
+// 		github: "lena",
+// 	},
+// 	{
+// 		id: "3",
+// 		name: "Phil Less",
+// 		email: "lessPhil@gmail.com",
+// 		github: "phil",
+// 	},
+// 	{
+// 		id: "4",
+// 		name: "Miguel Angel Duran",
+// 		email: "midudev@gmail.com",
+// 		github: "midudev",
+// 	},
+// 	//#region usersPorc
+// 	// {
+// 	// 	name: "Max Balmoore",
+// 	// 	leads: 49,
+// 	// 	sales: "860,000",
+// 	// 	quota: "750,000",
+// 	// 	variance: "low",
+// 	// 	region: "Region B",
+// 	// 	delta: "overperforming",
+// 	// 	deltaType: "increase",
+// 	// },
+// 	// {
+// 	// 	name: "Peter Moore",
+// 	// 	leads: 82,
+// 	// 	sales: "1,460,000",
+// 	// 	quota: "1,500,000",
+// 	// 	variance: "low",
+// 	// 	region: "Region A",
+// 	// 	delta: "average",
+// 	// 	deltaType: "unchanged",
+// 	// },
+// 	// {
+// 	// 	name: "Joe Sachs",
+// 	// 	leads: 49,
+// 	// 	sales: "1,230,000",
+// 	// 	quota: "1,800,000",
+// 	// 	variance: "medium",
+// 	// 	region: "Region B",
+// 	// 	delta: "underperforming",
+// 	// 	deltaType: "moderateDecrease",
+// 	// },
+// 	//#endregion
+// ];
 
 export function ListOfUsers() {
+	const users = useAppSelector((state) => state.users);
+	const { removeUser } = useUserActions();
 	return (
 		<Card>
 			<Title>
@@ -120,7 +123,7 @@ export function ListOfUsers() {
 										/>
 									</svg>
 								</button>
-								<button type="button">
+								<button onClick={() => removeUser(item.id)} type="button">
 									{/* rome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
