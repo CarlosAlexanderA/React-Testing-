@@ -10,7 +10,7 @@ import {
 	Title,
 } from "@tremor/react";
 import { useAppSelector } from "../hooks/store";
-import { useUserActions } from "./useUserActions";
+import { useUserActions } from "../hooks/useUserActions";
 // const users = [
 // 	{
 // 		id: "1",
