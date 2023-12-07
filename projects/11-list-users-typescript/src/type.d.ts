@@ -1,3 +1,12 @@
+// haciendo que el toSorted no tenga error
+// type.d.ts
+
+declare global {
+  interface Array<T> {
+    toSorted(compareFn?: (a: T, b: T) => number): T[]
+  }
+}
+
 export interface APIResults {
   results: User[]
   info: Info
@@ -89,7 +98,12 @@ export enum Title {
   Mr = 'Mr',
   Mrs = 'Mrs',
 }
-
+export enum SortBy {
+  NONE = 'none',
+  NAME = 'name',
+  LAST = 'last',
+  COUNTRY = 'country',
+}
 export interface Picture {
   large: string
   medium: string
