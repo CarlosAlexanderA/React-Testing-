@@ -12,6 +12,8 @@ export function UsersList({
   showColors,
   users,
 }: Props) {
+  console.log(users)
+
   return (
     <table width="100%">
       <thead>

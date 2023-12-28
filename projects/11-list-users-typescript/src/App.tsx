@@ -26,24 +26,26 @@ function App() {
     setUsers(originalUsers.current)
   }
   const handleDelete = (uuid: string) => {
-    const filteredUsersDelete = filteredUsers.filter(
-      user => user.login.uuid !== uuid
-    )
-    console.log(filteredUsers[0].login)
+    const updatedUsers = users.filter(user => user.login.uuid !== uuid)
 
-    setUsers(filteredUsersDelete)
+    setUsers(updatedUsers)
   }
   const handleChangeSort = (sort: SortBy) => {
     setSorting(sort)
   }
   useEffect(() => {
-    fetch('https://randomuser.me/api/?results=100')
+    fetch('https://randomuser.me/api/?results=10')
       .then(res => res.json())
       .then(data => {
         setUsers(data.results)
         originalUsers.current = data.results
       })
+      .catch(err => {
+        console.error(err)
+      })
+    // console.log(users)
   }, [])
+
   const filteredUsers = useMemo(() => {
     return filterCountry !== null && filterCountry.length > 0
       ? users.filter(user => {

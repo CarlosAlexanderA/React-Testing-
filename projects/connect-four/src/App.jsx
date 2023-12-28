@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Circle } from './components/Circle';
 import { TURNS } from './constants';
 import { createBoard, checkWinner } from './logic/game';
