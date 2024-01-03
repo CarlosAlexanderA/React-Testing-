@@ -1,22 +1,21 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import './App.css'
 import { SortBy, type User } from './type.d'
 import { UsersList } from './components/UsersList'
+import { useUsers } from './hooks/useUsers'
+import { Results } from './components/Results'
 
 function App() {
-  const [users, setUsers] = useState<User[]>([])
+  const { isLoading, isError, users, refetch, fetchNextPage, hasNextPage } =
+    useUsers()
 
   const [showColors, setShowColors] = useState(false)
   const [sorting, setSorting] = useState<SortBy>(SortBy.NONE)
   const [filterCountry, setFilterCountry] = useState<string | null>(null)
 
-  const originalUsers = useRef<User[]>([])
+  // const originalUsers = useRef<User[]>([])
 
   // * loading de nuestro carga de usuarios
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
-
-  const [currentPage, setCurrentPage] = useState(1)
 
   // ? userRef -> guarda el valor que queremos que se comparta entre renderizados
   // * pero que al cambiar no vuevla a renderizar el componente
@@ -29,46 +28,16 @@ function App() {
     setSorting(newSortingValue)
   }
   const handleReset = () => {
-    setUsers(originalUsers.current)
+    // setUsers(originalUsers.current)
+    void refetch()
   }
   const handleDelete = (uuid: string) => {
-    const updatedUsers = users.filter(user => user.login.uuid !== uuid)
-
-    setUsers(updatedUsers)
+    // const updatedUsers = users.filter(user => user.login.uuid !== uuid)
+    // setUsers(updatedUsers)
   }
   const handleChangeSort = (sort: SortBy) => {
     setSorting(sort)
   }
-  useEffect(() => {
-    setLoading(true)
-    // setError(false)
-    fetch(
-      `https://randomuser.me/api?results=10&seed=CarlosAcero&page=${currentPage}`
-    )
-      .then(async res => {
-        // forma correcta de ver si hay un error en la peticion
-        if (!res.ok) throw new Error('Error en la peticion')
-        return await res.json()
-      })
-      .then(res => {
-        // <- par alas promesas
-        setUsers(prevUsers => {
-          const newUsers = prevUsers.concat(res.results)
-          originalUsers.current = newUsers
-          return newUsers
-        })
-      })
-      .catch(err => {
-        // <- para los errores
-        setError(err)
-        console.error(err)
-      })
-      .finally(() => {
-        // <- se ejecuta siempre
-        setLoading(false)
-      })
-  }, [currentPage])
-
   const filteredUsers = useMemo(() => {
     return filterCountry !== null && filterCountry.length > 0
       ? users.filter(user => {
@@ -101,6 +70,7 @@ function App() {
   return (
     <div className="App">
       <h1>Prueba Tecnica</h1>
+      <Results />
       <header>
         <button onClick={toggleColors}>Colorear Filas</button>
         <button onClick={toggleSortByCountry}>
@@ -126,14 +96,20 @@ function App() {
             users={sortedUser}
           />
         )}
-        {loading && <strong>Cargando...</strong>}
-        {error && <p>Ha habido un error</p>}
-        {!error && users.length === 0 && <p>No hay usuarios</p>}
+        {isLoading && <strong>Cargando...</strong>}
+        {isError && <p>Ha habido un error</p>}
+        {!isLoading && !isError && users.length === 0 && <p>No hay usuarios</p>}
 
-        {!loading && !error && (
-          <button onClick={() => setCurrentPage(currentPage + 1)}>
+        {!isLoading && !isError && hasNextPage === true && (
+          <button
+            onClick={() => {
+              void fetchNextPage()
+            }}>
             Cargar mas resultados
           </button>
+        )}
+        {!isLoading && !isError && hasNextPage === false && (
+          <strong>No hay mas resultados</strong>
         )}
       </main>
     </div>
