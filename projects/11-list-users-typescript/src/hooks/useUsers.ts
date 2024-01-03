@@ -11,6 +11,9 @@ export function useUsers() {
       queryKey: ['users'],
       queryFn: fetchUsers, // <- Ninguna sobrecarga coincide con esta llamada, no se cual sea el error aqui
       getNextPageParam: lastPage => lastPage.nextCursor,
+      refetchOnWindowFocus: false, //<-no actualiza los datos cada vez
+      staleTime: 1000 * 3, //<- actualiza los datos viejos
+      // retry: false, // *intenta hacer de nuevo la llamada a la api
     })
 
   return {
