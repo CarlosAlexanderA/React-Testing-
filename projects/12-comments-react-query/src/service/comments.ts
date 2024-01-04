@@ -22,7 +22,11 @@ export const getComments = async () => {
   const json = await response.json();
   return json?.record;
 };
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export const postComment = async (comment: Comment) => {
+  // await delay(1000);
+  // throw new Error('no implemented yet.');
   const comments = await getComments();
 
   const id = crypto.randomUUID();
