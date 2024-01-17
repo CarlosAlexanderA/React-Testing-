@@ -15,7 +15,7 @@ function App () {
         <Stack direction='row' gap={2} alignItems='center' justifyContent='center'>
           <JavaScriptLogo />
           <Typography variant='h2' component='h1'>
-            Javascript Quizz
+            JavaScript Quizz
           </Typography>
         </Stack>
 
